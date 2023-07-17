@@ -1,0 +1,32 @@
+1.官网下载https://golang.google.cn/   安装目录为D:\andriod\GO
+2.安装后，cmd:	go version检查安装版本信息（是否成功安装）
+  
+新建文件存储目录	D:\andriod\GOPath   并添加到用户环境变量GOPATH
+
+3.配置系统环境变量path  	D:\andriod\GO\bin;
+				%GOPATH%\bin;
+				D:\andriod\GOPath\bin;
+ 
+	 
+
+4.配置  GOPROXY (第三方库下载来源的地址[代理])
+
+go env -w GO111MODULE=on
+go env -w GOPROXY=https://goproxy.io,direct
+
+5.下载vscode等编译软件
+	vscode配置：
+	1.下载插件go和Code Runner
+
+redis安装完，将目录配置到环境变量中
+
+
+redis-server 		打开redis数据库服务器
+redis-cli --raw		打开redis数据库用户端
+
+
+go编译器更新方法，官网下载安装到“D:\andriod\GO2”（GO2为新建文件夹）
+安装完后删除原来的“D:\andriod\GO”,再将GO2名改为GO
+因为电脑环境变量是“D:\andriod\GO”
+GOPATH不用再配置，因为卸载原编译器时D:\andriod\GOPath不会被删除
+
