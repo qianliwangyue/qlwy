@@ -1,33 +1,37 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"sync"
 	"time"
 )
 
-func main() {
-	var mutex sync.Mutex
-	hh := sync.WaitGroup{}
-	mutex.Lock() //加锁1
-	fmt.Println("Locked")
-	for i := 0; i <= 5; i++ {
-		hh.Add(1) //计数器添加1个goroutine
-		go func(i int) {
-			fmt.Println("Not lock:", i)
-			mutex.Lock() //加锁2
-			fmt.Println("Lock:", i)
-			time.Sleep(time.Second)
-			fmt.Println("UnLock:", i)
-			mutex.Unlock()  //解锁2
-			defer hh.Done() //计数器减一，即hh.add()结束
-		}(i)
+//10个窗口卖票，当剩余0张票时结束程序。
+
+var ticket = 5
+var wg sync.WaitGroup
+var mu sync.Mutex
+
+func sellticket() {
+	defer wg.Done()
+	mu.Lock()         //加互斥锁
+	defer mu.Unlock() //解互斥锁（这里是整个函数加锁，defer函数执行完成时解锁。如果需要具体某些步骤加锁去掉defer，到对应位置加锁即可）
+	if ticket <= 0 {
+		return
 	}
-	time.Sleep(time.Second)
-	fmt.Println("Unlocked")
-	mutex.Unlock() //解锁1
-	hh.Wait()
+	time.Sleep(100 * time.Millisecond)
+	ticket -= 1
+	log.Println("sell ticket -1")
 }
 
-//加锁与解锁之间内容是一起运行的
-//即：Look：和Unlock：一起输出、剩下的Locked、Not lock:（循环5次） 、Unlocked 一起运行
+func main() {
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go sellticket()
+	}
+	wg.Wait()
+	log.Println(ticket) //-5
+}
+
+//未加锁时，最后剩余票-5，因为多个协程出现了脏读、脏写（即：多个协程同时操控了该数据【而不是轮流操控】）
+//加锁后，最后剩余票0
