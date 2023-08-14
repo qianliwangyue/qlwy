@@ -35,4 +35,5 @@ func main() {
 	a.pri()  //小揪揪
 	hhh(&p1) //大卫
 	hhh(&p2) //小揪揪
+
 }

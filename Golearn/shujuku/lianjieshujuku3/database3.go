@@ -24,7 +24,7 @@ func init() {
 	//	"root:123456@tcp(127.0.0.1:3306)/chapter4")
 
 	db, _ = sql.Open("mysql",
-		"root:19992018470.Zd@tcp(127.0.0.1:3306)/student")
+		"root:19992018470.Zd@tcp(127.0.0.1:3306)/stu")
 
 	row, err := db.Query("select `sname` from `stuinfo2` where sno = ?", 201901152)
 	if err != nil {

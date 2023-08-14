@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 	"sync"
 )
 
 var wg sync.WaitGroup
 var once sync.Once
+var nn = runtime.NumCPU()
 
 func func1(ch1 chan<- int) { //ch1作为通道接收int
 	defer wg.Done() //将等待组计数器减1
@@ -40,6 +42,7 @@ func main() {
 	for ret := range ch2 {
 		fmt.Println(ret)
 	}
+	fmt.Println("cpu数:", nn)
 }
 
 //0，2，4，6....18
